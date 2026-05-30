@@ -15,13 +15,11 @@ import lombok.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    long id;
+    Long id;
     String userName;
     @Email
     String emai;
     @Size(min=10,max=10)
-    long number;
-    @Pattern(regexp = "^(?=.[a-z])(?=.[A-Z])(?=.\\d)(?=.[@$!%?&])[A-Za-z\\d@$!%?&]{8,}$",
-            message = "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character")
+    String number;
     String password;
 }
