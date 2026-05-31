@@ -30,4 +30,12 @@ public class WebsiteController {
     public ResponseEntity<WebsiteDto> getById(@PathVariable Long id){
         return ResponseEntity.ok(webService.getById(id));
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+
+        String response = webService.delete(id);
+
+        return ResponseEntity.ok(response);
+    }
 }
