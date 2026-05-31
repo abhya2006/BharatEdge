@@ -1,26 +1,46 @@
 package com.example.BharatEdge.user.entity;
 
+import com.example.BharatEdge.website.entity.Website;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "users")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
-    @Column(unique = true)
-    String userName;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String userName;
+
     @Email
-    String emai;
-    @Size(min=10,max=10)
-    String number;
-    String password;
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Size(min = 10, max = 10)
+    @Column(unique = true)
+    private String number;
+
+    @Column(nullable = false)
+    private String password;
+
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<Website> websites;
+
+    public void setEmai(String emai) {
+        this.email=emai;
+    }
 }
