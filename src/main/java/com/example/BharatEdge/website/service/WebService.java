@@ -8,6 +8,9 @@ import com.example.BharatEdge.website.entity.Website;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class WebService {
 
@@ -33,5 +36,42 @@ public class WebService {
         websiterepo.save(website);
 
         return "Website Saved Successfully";
+    }
+
+    public List<Website> getAll(){
+        return websiterepo.findAll();
+    }
+
+
+    public List<WebsiteDto> getAllWebsites() {
+
+        List<Website> websites = websiterepo.findAll();
+
+        List<WebsiteDto> dtoList = new ArrayList<>();
+
+        for (Website website : websites) {
+
+            WebsiteDto dto = new WebsiteDto();
+
+            dto.setName(website.getName());
+            dto.setUrl(website.getUrl());
+            dto.setUserId(website.getUser().getId());
+
+            dtoList.add(dto);
+        }
+
+        return dtoList;
+    }
+
+    public WebsiteDto getById(Long id){
+        Website websites=websiterepo.getById(id);
+
+        WebsiteDto dto=new WebsiteDto();
+        dto.setName(websites.getName());
+        dto.setUrl(websites.getUrl());
+        dto.setUserId(websites.getUser().getId());
+
+
+        return dto;
     }
 }
