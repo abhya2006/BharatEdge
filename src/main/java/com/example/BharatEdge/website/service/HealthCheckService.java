@@ -17,16 +17,18 @@ public class HealthCheckService {
 
     public String checkWebsite(Long id) {
 
-        Optional<Website> Website =
+        Optional<Website> optionalWebsite =
                 websiterepo.findById(id);
 
-        if (Website.isEmpty()) {
+        if (optionalWebsite.isEmpty()) {
             return "Website Not Found";
         }
 
-        Website website = Website.get();
+        Website website = optionalWebsite.get();
 
         try {
+
+            long startTime = System.currentTimeMillis();
 
             RestTemplate restTemplate = new RestTemplate();
 
@@ -36,11 +38,38 @@ public class HealthCheckService {
                             String.class
                     );
 
-            return response.getStatusCode().toString();
+            long endTime = System.currentTimeMillis();
 
-        } catch (Exception e) {
+            long responseTime = endTime - startTime;
 
-            return "Website Down";
+            int statusCode = response.getStatusCode().value();
+
+            String status;
+
+            if (statusCode >= 200 &&
+                    statusCode < 400) {
+
+                status = "UP";
+
+            } else {
+
+                status = "DOWN";
+            }
+
+            return
+                    "Website : " + website.getName() +
+                            "\nStatus : " + status +
+                            "\nStatus Code : " + statusCode +
+                            "\nResponse Time : " + responseTime + " ms";
+
+
+        }
+
+        catch (Exception e) {
+
+            return
+                    "Website : " + website.getName() +
+                            "\nStatus : DOWN";
         }
     }
 }
